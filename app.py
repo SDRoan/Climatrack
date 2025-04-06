@@ -11,7 +11,7 @@ import random
 st.set_page_config(page_title="AI Climate Impact Calculator", layout="centered")
 
 
-summarizer = pipeline("summarization")
+
 flan_tokenizer = AutoTokenizer.from_pretrained("google/flan-t5-base")
 flan_model = AutoModelForSeq2SeqLM.from_pretrained("google/flan-t5-base")
 
