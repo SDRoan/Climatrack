@@ -3,3 +3,6 @@ transformers
 torch
 matplotlib
 plotly
+transformers==4.51.3
+torch
+sentencepiece
