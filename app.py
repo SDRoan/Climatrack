@@ -3,7 +3,7 @@ import requests
 import re
 import datetime
 import matplotlib.pyplot as plt
-from transformers import pipeline, AutoTokenizer, AutoModelForSeq2SeqLM
+from transformers import pipeline
 import torch
 import random
 
@@ -11,9 +11,8 @@ import random
 st.set_page_config(page_title="AI Climate Impact Calculator", layout="centered")
 
 
-summarizer = pipeline("summarization")
-flan_tokenizer = AutoTokenizer.from_pretrained("google/flan-t5-base")
-flan_model = AutoModelForSeq2SeqLM.from_pretrained("google/flan-t5-base")
+summarizer = pipeline("summarization", model="sshleifer/distilbart-cnn-12-6")
+
 
 
 def extract_quantities(text):
