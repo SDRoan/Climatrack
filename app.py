@@ -12,6 +12,25 @@ st.set_page_config(page_title="AI Climate Impact Calculator", layout="centered")
 
 
 summarizer = pipeline("summarization", model="sshleifer/distilbart-cnn-12-6")
+def detect_activities_with_ai(user_input):
+    prompt = (
+        "Classify the user's activities based on the following routine:\n"
+        f"{user_input}\n\n"
+        "Categories: transportation, electricity usage, meat consumption\n"
+        "Respond in JSON with confidence scores from 0.0 to 1.0. Example:\n"
+        '{"transportation": 0.7, "electricity usage": 0.4, "meat consumption": 0.9}'
+    )
+    try:
+        result = summarizer(prompt, max_length=100, min_length=30, do_sample=False)
+        text = result[0]["summary_text"]
+        return eval(text.strip())
+    except:
+        return {
+            "transportation": 0.3,
+            "electricity usage": 0.3,
+            "meat consumption": 0.3
+        }
+
 
 
 
@@ -148,10 +167,7 @@ goal = st.number_input("🎯 Set a carbon footprint goal (kg CO₂)", min_value=
 
 if st.button("Calculate Footprint"):
    with st.spinner("🔍 Using AI to analyze your routine..."):
-       classifier = pipeline("zero-shot-classification", model="facebook/bart-large-mnli")
-       labels = ["transportation", "electricity usage", "meat consumption"]
-       result = classifier(user_input, candidate_labels=labels)
-       activities = {label: score for label, score in zip(result["labels"], result["scores"])}
+       activities = detect_activities_with_ai(user_input)
 
 
        st.subheader("🧠 Detected Activities:")
